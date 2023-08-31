@@ -47,6 +47,7 @@ class FileOperations {
                 writer.newLine();
             }
         }
+        writer.close();
     }
 
     public void fileOperationsProcessing(String fileName, String resultFileName) throws IOException {
