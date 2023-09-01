@@ -3,17 +3,22 @@ import java.util.*;
 
 class FileOperations {
 
-    public List<String> readFile(String fileName) throws FileNotFoundException {
-        File file = new File(fileName);
-        Scanner scan = new Scanner(file);
+    public List<String> readFile(String fileName) {
         List<String> operations = new ArrayList<>();
-        while (scan.hasNextLine()) {
-            operations.add(scan.nextLine());
+        try (
+                var file = new FileReader(fileName);
+                var scan = new Scanner(file);
+            ) {
+            while (scan.hasNextLine()) {
+                operations.add(scan.nextLine());
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
         return operations;
     }
 
-    public List<String> calculateOperations(List<String> operations) {
+    private List<String> calculateOperations(List<String> operations) {
         List<String> results = new ArrayList<>();
         for (int i = 0; i < operations.size(); i++) {
             String[] operation = operations.get(i).split(" ");
@@ -27,31 +32,36 @@ class FileOperations {
                 case "/" -> num1 / num2;
                 default -> 0.0;
             };
-            results.add(String.format("%.1f %s %.1f = %.1f", num1, operator, num2, result));
+            results.add(String.format("%.2f %s %.2f = %.2f", num1, operator, num2, result));
         }
         return results;
     }
 
-    public void displayResults(List<String> results) {
+    private void displayResults(List<String> results) {
         for (String result : results) {
             System.out.println(result);
         }
     }
 
-    public void writeResultsToFile(List<String> results, String resultFileName) throws IOException {
-        FileWriter file = new FileWriter(resultFileName);
-        BufferedWriter writer = new BufferedWriter(file);
-        for (int i = 0; i < results.size(); i++) {
-            writer.write(results.get(i));
-            if (i < results.size() - 1) {
-                writer.newLine();
+    private void writeResultsToFile(List<String> results, String resultFileName) {
+        try (
+                var file = new FileWriter(resultFileName);
+                var writer = new BufferedWriter(file);
+        ) {
+            for (int i = 0; i < results.size(); i++) {
+                writer.write(results.get(i));
+                if (i < results.size() - 1) {
+                    writer.newLine();
+                }
             }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
-        writer.close();
     }
 
     public void fileOperationsProcessing(String fileName, String resultFileName) throws IOException {
-        List<String> calculationsList = calculateOperations(readFile(fileName));
+        List<String> operations = readFile(fileName);
+        List<String> calculationsList = calculateOperations(operations);
         displayResults(calculationsList);
         writeResultsToFile(calculationsList, resultFileName);
     }
