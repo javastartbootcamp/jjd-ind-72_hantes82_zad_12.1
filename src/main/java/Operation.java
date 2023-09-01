@@ -1,4 +1,4 @@
-public class Operation {
+class Operation {
     double num1;
     String operator;
     double num2;
