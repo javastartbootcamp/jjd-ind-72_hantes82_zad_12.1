@@ -15,8 +15,7 @@ class FileOperations {
                 double num1 = Double.parseDouble(operation[0]);
                 double num2 = Double.parseDouble(operation[2]);
                 String operator = operation[1];
-                double result = Operation.getResult(num1, operator, num2);
-                operations.add(new Operation(num1, operator, num2, result));
+                operations.add(new Operation(num1, operator, num2));
             }
         } catch (IOException e) {
             throw new RuntimeException(e);

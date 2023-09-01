@@ -1,18 +1,18 @@
 class Operation {
-    double num1;
-    String operator;
-    double num2;
-    double result;
+    private double num1;
+    private String operator;
+    private double num2;
+    private double result;
 
-    public Operation(double num1, String operator, double num2, double result) {
+    public Operation(double num1, String operator, double num2) {
 
         this.num1 = num1;
         this.operator = operator;
         this.num2 = num2;
-        this.result = getResult(num1, operator, num2);
+        this.result = getResult();
     }
 
-    public static double getResult(double num1, String operator, double num2) {
+    private double getResult() {
         double result = switch (operator) {
             case "+" -> num1 + num2;
             case "-" -> num1 - num2;
