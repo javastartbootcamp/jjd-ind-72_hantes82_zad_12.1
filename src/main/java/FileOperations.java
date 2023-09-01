@@ -3,14 +3,20 @@ import java.util.*;
 
 class FileOperations {
 
-    public List<String> readFile(String fileName) {
-        List<String> operations = new ArrayList<>();
+    private List<Operation> readFile(String fileName) {
+        List<Operation> operations = new ArrayList<>();
         try (
                 var file = new FileReader(fileName);
                 var scan = new Scanner(file);
             ) {
             while (scan.hasNextLine()) {
-                operations.add(scan.nextLine());
+                String nextLine = scan.nextLine();
+                String[] operation = nextLine.split(" ");
+                double num1 = Double.parseDouble(operation[0]);
+                double num2 = Double.parseDouble(operation[2]);
+                String operator = operation[1];
+                double result = Operation.getResult(num1, operator, num2);
+                operations.add(new Operation(num1, operator, num2, result));
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -18,38 +24,19 @@ class FileOperations {
         return operations;
     }
 
-    private List<String> calculateOperations(List<String> operations) {
-        List<String> results = new ArrayList<>();
-        for (int i = 0; i < operations.size(); i++) {
-            String[] operation = operations.get(i).split(" ");
-            double num1 = Double.parseDouble(operation[0]);
-            String operator = operation[1];
-            double num2 = Double.parseDouble(operation[2]);
-            double result = switch (operator) {
-                case "+" -> num1 + num2;
-                case "-" -> num1 - num2;
-                case "*" -> num1 * num2;
-                case "/" -> num1 / num2;
-                default -> 0.0;
-            };
-            results.add(String.format("%.2f %s %.2f = %.2f", num1, operator, num2, result));
-        }
-        return results;
-    }
-
-    private void displayResults(List<String> results) {
-        for (String result : results) {
+    private void displayResults(List<Operation> results) {
+        for (Operation result : results) {
             System.out.println(result);
         }
     }
 
-    private void writeResultsToFile(List<String> results, String resultFileName) {
+    private void writeResultsToFile(List<Operation> results, String resultFileName) {
         try (
                 var file = new FileWriter(resultFileName);
                 var writer = new BufferedWriter(file);
         ) {
             for (int i = 0; i < results.size(); i++) {
-                writer.write(results.get(i));
+                writer.write(results.get(i).toString());
                 if (i < results.size() - 1) {
                     writer.newLine();
                 }
@@ -60,10 +47,9 @@ class FileOperations {
     }
 
     public void fileOperationsProcessing(String fileName, String resultFileName) throws IOException {
-        List<String> operations = readFile(fileName);
-        List<String> calculationsList = calculateOperations(operations);
-        displayResults(calculationsList);
-        writeResultsToFile(calculationsList, resultFileName);
+        List<Operation> operations = readFile(fileName);
+        displayResults(operations);
+        writeResultsToFile(operations, resultFileName);
     }
 
 }

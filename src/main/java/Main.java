@@ -7,5 +7,5 @@ class Main {
         String resultFileName = "resultFile.txt";
         FileOperations fileoperations = new FileOperations();
         fileoperations.fileOperationsProcessing(fileName, resultFileName);
-        }
+    }
 }
