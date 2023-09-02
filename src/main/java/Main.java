@@ -2,7 +2,7 @@ import java.io.UncheckedIOException;
 
 class Main {
     public static void main(String[] args) {
-        String fileName = "operation.txt";
+        String fileName = "operations.txt";
         String resultFileName = "resultFile.txt";
         try {
             FileOperations fileoperations = new FileOperations();
