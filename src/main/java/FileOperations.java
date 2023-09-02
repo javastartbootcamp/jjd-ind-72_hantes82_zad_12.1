@@ -18,7 +18,7 @@ class FileOperations {
                 operations.add(new Operation(num1, operator, num2));
             }
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new UncheckedIOException(e);
         }
         return operations;
     }
@@ -41,14 +41,13 @@ class FileOperations {
                 }
             }
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new UncheckedIOException(e);
         }
     }
 
-    public void fileOperationsProcessing(String fileName, String resultFileName) throws IOException {
+    public void fileOperationsProcessing(String fileName, String resultFileName) {
         List<Operation> operations = readFile(fileName);
         displayResults(operations);
         writeResultsToFile(operations, resultFileName);
     }
-
 }

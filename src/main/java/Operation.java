@@ -26,6 +26,5 @@ class Operation {
     @Override
     public String toString() {
         return num1 + " " + operator + " " + num2 + " = " + result;
-
     }
 }

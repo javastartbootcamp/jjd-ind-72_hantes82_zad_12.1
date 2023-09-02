@@ -1,11 +1,14 @@
-import java.io.IOException;
-import java.util.*;
+import java.io.UncheckedIOException;
 
 class Main {
-    public static void main(String[] args) throws IOException {
-        String fileName = "operations.txt";
+    public static void main(String[] args) {
+        String fileName = "operation.txt";
         String resultFileName = "resultFile.txt";
-        FileOperations fileoperations = new FileOperations();
-        fileoperations.fileOperationsProcessing(fileName, resultFileName);
+        try {
+            FileOperations fileoperations = new FileOperations();
+            fileoperations.fileOperationsProcessing(fileName, resultFileName);
+        } catch (UncheckedIOException e) {
+            System.err.println("Nie znaleziono pliku");
+        }
     }
 }
